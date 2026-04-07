@@ -1,5 +1,5 @@
-##Data Engineering Project: Automated Gmail-to-Postgres Pipeline
-#Project Overview
+Data Engineering Project: Automated Gmail-to-Postgres Pipeline
+Project Overview
 This project addresses the manual bottleneck of processing data from email attachments. I have developed an automated ETL (Extract, Transform, Load) pipeline that monitors a Gmail inbox for CSV files and syncs the data directly into a Supabase PostgreSQL database. This automation ensures 100% data accuracy and eliminates the need for manual intervention.
 
 System Architecture

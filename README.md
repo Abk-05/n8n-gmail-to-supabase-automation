@@ -1,14 +1,16 @@
 # Data Engineering Project: Automated Gmail-to-Postgres Pipeline
 
 ## Project Overview
-This project addresses the manual bottleneck of processing data from email attachments. I have developed an automated ETL (Extract, Transform, Load) pipeline that monitors a Gmail inbox for CSV files and syncs the data directly into a Supabase PostgreSQL database. This automation ensures 100% data accuracy and eliminates the need for manual intervention.
+This project addresses the manual bottleneck of processing data from email attachments. I have developed an automated ETL (Extract, Transform, Load) pipeline that monitors a Gmail inbox for CSV files and syncs the data directly into a Supabase PostgreSQL database.
 
 ## System Architecture
 The pipeline is orchestrated using n8n and follows a structured data flow:
 
-* **Extraction Phase:** The Gmail Trigger node identifies new emails with specific attachments.
-* **Transformation Phase:** The binary CSV data is parsed into a structured JSON format.
-* **Loading Phase:** The processed data is mapped and inserted into the target PostgreSQL table.
+1. **Extraction Phase:** The Gmail Trigger node identifies new emails with specific attachments.
+2. **Transformation Phase:** The binary CSV data is parsed into a structured JSON format.
+3. **Loading Phase:** The processed data is mapped and inserted into the target PostgreSQL table.
+
+![n8n Workflow](work-flow.png)
 
 ## Technical Stack
 * **Orchestration Tool:** n8n (Self-hosted)
@@ -19,22 +21,17 @@ The pipeline is orchestrated using n8n and follows a structured data flow:
 ## Engineering Challenges and Solutions
 
 ### 1. Database Connection and Networking
-I encountered connection timeouts while linking the local automation engine to the cloud database. To resolve this, I transitioned from a direct connection to a Transaction Pooler using Port 6543, which improved stability across different network protocols (IPv4/IPv6).
+I encountered connection timeouts while linking the local automation engine to the cloud database. To resolve this, I transitioned to a Transaction Pooler using Port 6543, which improved stability.
 
 ### 2. Data Cleaning and Formatting
-The source CSV files often contained currency formatting with commas (e.g., 1,363). Since the database requires strict numeric types for calculations, I implemented JavaScript expressions to sanitize the strings and convert them into valid integers before the Load phase.
+The source CSV files contained currency formatting with commas (e.g., 1,363). I implemented JavaScript expressions to sanitize the strings and convert them into valid integers.
 
-### 3. Error Handling and Schema Mapping
-To ensure the pipeline doesn't break due to missing fields, I implemented strict schema mapping. This ensures that every attribute from the CSV aligns perfectly with the PostgreSQL table columns.
-
-## Repository Contents
-* **workflow.json:** The complete exported n8n workflow logic.
-* **sample_sales_data.csv:** A sample dataset used for testing the pipeline architecture.
-* **documentation.md:** Technical setup guide for API credentials.
+![Database Result](dataset.png)
 
 ## Implementation Guide
-* **Step 1:** Import the `workflow.json` file into your n8n environment.
-* **Step 2:** Enable the Gmail API in Google Cloud Console and generate OAuth2 credentials.
-* **Step 3:** Create a table in your Supabase instance that matches the CSV header structure.
-* **Step 4:** Update the Postgres node with your specific Host, Port, and Password.
+* Import the `workflow.json` file into your n8n environment.
+* Enable the Gmail API in Google Cloud Console.
+* Create a table in Supabase matching the CSV header structure.
+
+![Gmail Trigger](gmail.png)
 * **Step 5:** Toggle the workflow to Active to begin real-time data synchronization.

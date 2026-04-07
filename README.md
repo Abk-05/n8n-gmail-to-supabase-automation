@@ -3,6 +3,10 @@
 ## Project Overview
 This project addresses the manual bottleneck of processing data from email attachments. I have developed an automated ETL (Extract, Transform, Load) pipeline that monitors a Gmail inbox for CSV files and syncs the data directly into a Supabase PostgreSQL database.
 
+## 📁 Project Dataset
+To test this pipeline, you can use the sample dataset provided in this repository:
+* **[Download Sample CSV](sample_sales_data.csv)** (Use this file to trigger the automation via Gmail).
+
 ## System Architecture
 The pipeline is orchestrated using n8n and follows a structured data flow:
 
@@ -21,16 +25,16 @@ The pipeline is orchestrated using n8n and follows a structured data flow:
 ## Engineering Challenges and Solutions
 
 ### 1. Database Connection and Networking
-I encountered connection timeouts while linking the local automation engine to the cloud database. To resolve this, I transitioned to a Transaction Pooler using Port 6543, which improved stability.
+I transitioned to a Transaction Pooler using Port 6543 to resolve connection timeouts between the local automation engine and the cloud database.
 
-### 2. Data Cleaning and Formatting
-The source CSV files contained currency formatting with commas (e.g., 1,363). I implemented JavaScript expressions to sanitize the strings and convert them into valid integers.
+### 2. Data Cleaning (The Comma Problem)
+The source CSV files contained currency formatting with commas (e.g., 1,363). I implemented JavaScript expressions within n8n to strip these commas and convert strings into valid integers before database insertion.
 
 ![Database Result](dataset.png)
 
 ## Implementation Guide
-* Import the `workflow.json` file into your n8n environment.
-* Enable the Gmail API in Google Cloud Console.
-* Create a table in Supabase matching the CSV header structure.
+1. Import the `workflow.json` file into your n8n environment.
+2. Upload the `sample_sales_data.csv` as an email attachment to your registered Gmail.
+3. Check your Supabase table for the synced records.
 
 ![Gmail Trigger](gmail.png)

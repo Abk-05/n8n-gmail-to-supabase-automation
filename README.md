@@ -34,4 +34,3 @@ The source CSV files contained currency formatting with commas (e.g., 1,363). I 
 * Create a table in Supabase matching the CSV header structure.
 
 ![Gmail Trigger](gmail.png)
-* **Step 5:** Toggle the workflow to Active to begin real-time data synchronization.
